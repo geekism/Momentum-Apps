@@ -671,7 +671,6 @@ void picopass_poller_start(
     instance->context = context;
 
     instance->session_state = PicopassPollerSessionStateActive;
-    nfc_iso15693_force_1outof4(instance->nfc);
     nfc_start(instance->nfc, picopass_poller_callback, instance);
 }
 
