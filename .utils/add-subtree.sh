@@ -36,10 +36,6 @@ else
 fi
 
 if [ "${prevremotedir}" != "" ]; then
-    if [ -e "${path}/.subtree-cache" ]; then
-        # Backup subtree cache
-        cp -rT "${path}/.subtree-cache" "${prevremotedir}/.subtree-cache"
-    fi
     rm -r "${path}"
     mv -T "${prevremotedir}" "${path}"
 fi
