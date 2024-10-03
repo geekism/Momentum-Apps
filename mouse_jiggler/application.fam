@@ -1,0 +1,17 @@
+# For details & more options, see documentation/AppManifests.md in firmware repo
+
+App(
+    appid="jiggle_mouse",  # Must be unique
+    name="Jiggle Mouse",  # Displayed in menus
+    apptype=FlipperAppType.EXTERNAL,
+    entry_point="mouse_jiggler_app",
+    stack_size=2 * 1024,
+    fap_category="USB",
+    # Optional values
+    # fap_version="0.1",
+    fap_icon="jiggle_mouse.png",  # 10x10 1-bit PNG
+    fap_description="It Jiggles the Mouse 120 Pixels",
+    fap_author="Comrade Orion",
+    fap_weburl="https://github.com/OrionW06/Jiggle-Da-Mouse-F0/",
+    fap_icon_assets="images",  # Image assets to compile for this application
+)
