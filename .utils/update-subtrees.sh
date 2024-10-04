@@ -30,4 +30,4 @@ for subtree in "${subtrees[@]}"; do
     done {remote}< "${subtree}"
 done
 
-notify-send -t 0 -a Git -i git "Subtree update finished" "Double check merge commits" &> /dev/null | true
+notify-send -a Git -i git "Subtree update finished" "Double check merge commits" &> /dev/null | true
