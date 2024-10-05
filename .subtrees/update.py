@@ -11,7 +11,7 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         subtrees = sys.argv[1:]
     else:
-        subtrees = list(common.REPO_ROOT.glob("**/.gitsubtree"))
+        subtrees = sorted(list(common.REPO_ROOT.glob("**/.gitsubtree")))
 
     for subtree in subtrees:
         if not isinstance(subtree, pathlib.Path):
