@@ -26,13 +26,13 @@ We didn't want to have fork repos for each single app since it would get out of 
 Subtrees work in a very peculiar way: they pull and compare commit history from a remote repo and apply it to a subdirectory of this repo.
 That's why the commit history for this repo is so huge, it contains all the commits for all the apps, plus our edits.
 
-To make updating more manageable, we have added some scripts on top of subtrees:
-- add a new app with `.utils/add-subtree.sh <path> <repo url> <branch> [subdir]`, this will pull the history and create `path/.gitsubtree` to remember the url, branch and subdir
-- run `.utils/update-subtrees.sh <path> [path2] [pathN...]` to pull updates for some subtrees
-- or run `.utils/update-subtrees.sh` with no arguments to update all subtrees
+To make updating more manageable, we have added some scripts on top of subtrees (requires [Python](https://python.org) installed to use):
+- add a new app with `.subtrees/add.py <path> <repo url> <branch> [subdir]`, this will pull the history and create `path/.gitsubtree` to remember the url, branch and subdir
+- run `.subtrees/update.py <path> [path2] [pathN...]` to pull updates for some subtrees
+- or run `.subtrees/update.py` with no arguments to update all subtrees
 
 Most apps have a remote subtree URL for both the original repository, and for any forks / other sources such as [@xMasterX's pack](https://github.com/xMasterX/all-the-plugins).
-This process is assisted by `.utils/add-subtree.sh`, if the specified subtree path already exists, it will:
+This process is assisted by `.subtrees/add.py`, if the specified subtree path already exists, it will:
 - remove the previous subtree with a commit
 - add the subtree from the new remote
 - restore the previous subtree and merge the remotes
