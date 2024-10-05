@@ -18,7 +18,7 @@ if __name__ == "__main__":
             if not subtree.endswith("/.gitsubtree"):
                 subtree += "/.gitsubtree"
             subtree = common.REPO_ROOT / subtree
-        path = subtree.parent.name
+        path = str(subtree.parent.relative_to(common.REPO_ROOT))
         print(f"\n\nUpdating {path}...")
 
         for remote in subtree.read_text().splitlines():
@@ -53,5 +53,7 @@ if __name__ == "__main__":
                             lines[i] = f"{repo} {branch} {subdir} {commit}"
                             break
                     subtree.write_text("\n".join(lines) + "\n")
+                    common.git("add", str(subtree.relative_to(common.REPO_ROOT)))
+                    common.git("commit", "--amend", "--no-edit")
 
     common.send_alert("Subtree update finished", "Double check merge commits")
