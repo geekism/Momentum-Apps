@@ -62,15 +62,16 @@ if __name__ == "__main__":
             "-m",
             f"Add {path} from {repo}",
         )
+        commit = None
     else:
-        common.subdir_split_helper(path, repo, branch, subdir, "add")
+        commit = common.subdir_split_helper(path, repo, branch, subdir, "add")
 
     if prevremotedir:
         shutil.rmtree(path)
         shutil.move(prevremotedir / path, path)
         prevremotedir.rmdir()
 
-    line = f"{repo} {branch} {subdir}"  # TODO: add commit hash for subdir splits
+    line = f"{repo} {branch} {subdir}" + (f" {commit}" if commit else "")
     if gitsubtree.is_file():
         # Add new remote at the top
         lines = gitsubtree.read_text().splitlines()

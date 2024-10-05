@@ -43,10 +43,16 @@ if __name__ == "__main__":
                 )
                 common.check_merge_result(path, repo, result, status)
             else:
-                common.subdir_split_helper(
+                commit = common.subdir_split_helper(
                     path, repo, branch, subdir, "merge", cached=cached
                 )
-                # TODO: save new cached commit
+                if commit:
+                    lines = subtree.read_text().splitlines()
+                    for i in range(len(lines)):
+                        if lines[i].startswith(repo):
+                            lines[i] = f"{repo} {branch} {subdir} {commit}"
+                            break
+                    subtree.write_text("\n".join(lines) + "\n")
 
     # TODO: notifications
     # notify-send -a Git -i git "Subtree update finished" "Double check merge commits" &> /dev/null

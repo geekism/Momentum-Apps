@@ -126,6 +126,7 @@ def subdir_split_helper(path, repo, branch, subdir, action, cached=None):
         ok = False
     git("checkout", prevbranch)
     if ok:
+        prevhead = git("rev-parse", "HEAD", pipe=True)
         result, status = git(
             "subtree",
             action,
@@ -137,3 +138,7 @@ def subdir_split_helper(path, repo, branch, subdir, action, cached=None):
             tee=True,
         )
         check_merge_result(path, repo, result, status)
+        if git("rev-parse", "HEAD", pipe=True) != prevhead:
+            # Only return new upstream hash if subtree was updated
+            # Not if merge was aborted or nothing to update
+            return current
