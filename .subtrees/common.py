@@ -94,7 +94,7 @@ def check_workdir_state():
         sys.exit(1)
 
 
-def subdir_split_helper(path, repo, branch, subdir, action):
+def subdir_split_helper(path, repo, branch, subdir, action, cached=None):
     check_workdir_state()
 
     prevbranch = git("branch", "--show-current", pipe=True)
@@ -104,7 +104,6 @@ def subdir_split_helper(path, repo, branch, subdir, action):
     git("fetch", "--no-tags", repo, f"{branch}:{fetch}")
 
     current = git("rev-parse", fetch, pipe=True)
-    cached = ""  # TODO: get cached commit from subtree file and run diff
     skip = False
     if cached:
         try:

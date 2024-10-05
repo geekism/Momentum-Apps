@@ -24,8 +24,11 @@ if __name__ == "__main__":
         for remote in subtree.read_text().splitlines():
             if remote.startswith("#"):
                 continue
-            # TODO: add commit hash for subdir splits
-            repo, branch, subdir = remote.split(" ")[:3]
+            params = remote.split(" ")
+            if len(params) == 4:
+                repo, branch, subdir, cached = params
+            else:
+                repo, branch, subdir = params
             if subdir == "/":
                 result, status = common.git(
                     "subtree",
@@ -40,7 +43,10 @@ if __name__ == "__main__":
                 )
                 common.check_merge_result(path, repo, result, status)
             else:
-                common.subdir_split_helper(path, repo, branch, subdir, "merge")
+                common.subdir_split_helper(
+                    path, repo, branch, subdir, "merge", cached=cached
+                )
+                # TODO: save new cached commit
 
     # TODO: notifications
     # notify-send -a Git -i git "Subtree update finished" "Double check merge commits" &> /dev/null
