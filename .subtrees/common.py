@@ -56,11 +56,21 @@ def is_workdir_clean():
         return False
 
 
+def send_alert(title, message):
+    try:
+        subprocess.run(
+            ["notify-send", "-a", "Git", "-i", "git", title, message],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+    except Exception:
+        pass
+
+
 def check_merge_result(path, repo, result, status):
     if "Automatic merge failed; fix conflicts and then commit the result." in result:
         print(f"MERGE_MSG: Merge {path} from {repo}")
-        # TODO: notifications
-        # notify-send -a Git -i git "Subtree merge failed" "Resolve current index to continue" &> /dev/null
+        send_alert("Subtree merge failed", "Resolve current index to continue")
         while True:
             input("Resolve current index then press Enter...")
             if is_workdir_clean():

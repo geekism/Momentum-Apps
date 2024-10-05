@@ -54,5 +54,4 @@ if __name__ == "__main__":
                             break
                     subtree.write_text("\n".join(lines) + "\n")
 
-    # TODO: notifications
-    # notify-send -a Git -i git "Subtree update finished" "Double check merge commits" &> /dev/null
+    common.send_alert("Subtree update finished", "Double check merge commits")
