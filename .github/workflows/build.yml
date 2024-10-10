@@ -40,6 +40,7 @@ jobs:
 
       - name: "Build the firmware and apps"
         run: |
+          ls -la
           ./fbt TARGET_HW=$TARGET_HW $FBT_BUILD_TYPE updater_package
 
       - name: "Check for uncommitted changes"
