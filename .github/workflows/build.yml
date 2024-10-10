@@ -37,6 +37,7 @@ jobs:
 
       - name: "Get commit details"
         run: |
+          git add applications/external
           BUILD_TYPE='DEBUG=0 COMPACT=1'
           echo "FBT_BUILD_TYPE=$BUILD_TYPE" >> $GITHUB_ENV
           echo "TARGET=${{ matrix.target }}" >> $GITHUB_ENV
