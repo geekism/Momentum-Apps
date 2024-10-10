@@ -27,4 +27,6 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: "Check formatting"
-        run: ./fbt lint_all
+        run: |
+          git add applications/external
+          ./fbt lint_all
