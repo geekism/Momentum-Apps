@@ -24,7 +24,7 @@ void init() {
         }
     }
     cursorx = 3;
-    cursory = 5 ;
+    cursory = 5;
     player = 1;
 }
 
