@@ -24,8 +24,7 @@ void init() {
         }
     }
     cursorx = 3;
-    cursory = 5;
-    player = 1;
+    cursory = 5 player = 1;
 }
 
 const NotificationSequence end = {
