@@ -18,26 +18,32 @@ enum QuickState {
     QuickS2Boot_Marauder,
     QuickS2Boot_Wardriver,
     QuickS2Boot_Blackmagic,
+    QuickS2Boot_GhostESP,
     QuickWROOMBoot,
     QuickWROOMBoot_Marauder,
     QuickWROOMBoot_Wardriver,
     QuickWROOMBoot_Airtag,
+    QuickWROOMBoot_GhostESP,
     QuickS3Boot,
     QuickS3Boot_Marauder,
     QuickS3Boot_Wardriver,
     QuickS3Boot_Airtag,
+    QuickS3Boot_GhostESP,
     QuickWROOM,
     QuickWROOM_Marauder,
     QuickWROOM_Wardriver,
     QuickWROOM_Airtag,
+    QuickWROOM_GhostESP,
     QuickS2,
     QuickS2_Marauder,
     QuickS2_Wardriver,
     QuickS2_Blackmagic,
+    QuickS2_GhostESP,
     QuickS3,
     QuickS3_Marauder,
     QuickS3_Wardriver,
     QuickS3_Airtag,
+    QuickS3_GhostESP,
 };
 
 void esp_flasher_scene_quick_submenu_callback(void* context, uint32_t index) {
@@ -90,12 +96,15 @@ void esp_flasher_scene_quick_on_enter(void* context) {
         submenu_add_item(
             submenu, "Other ESP32-S3", QuickS3, esp_flasher_scene_quick_submenu_callback, app);
         break;
+
     case QuickS2Boot_Marauder:
     case QuickS2Boot_Wardriver:
     case QuickS2Boot_Blackmagic:
+    case QuickS2Boot_GhostESP:
     case QuickS2_Marauder:
     case QuickS2_Wardriver:
     case QuickS2_Blackmagic:
+    case QuickS2_GhostESP:
         submenu_set_header(submenu, "Choose Firmware:");
         submenu_add_item(
             submenu,
@@ -115,13 +124,22 @@ void esp_flasher_scene_quick_on_enter(void* context) {
             state > QuickS2 ? QuickS2_Blackmagic : QuickS2Boot_Blackmagic,
             esp_flasher_scene_quick_submenu_callback,
             app);
+        submenu_add_item(
+            submenu,
+            "Ghost ESP",
+            state > QuickS2 ? QuickS2_GhostESP : QuickS2Boot_GhostESP,
+            esp_flasher_scene_quick_submenu_callback,
+            app);
         break;
+
     case QuickWROOMBoot_Marauder:
     case QuickWROOMBoot_Wardriver:
     case QuickWROOMBoot_Airtag:
+    case QuickWROOMBoot_GhostESP:
     case QuickWROOM_Marauder:
     case QuickWROOM_Wardriver:
     case QuickWROOM_Airtag:
+    case QuickWROOM_GhostESP:
         submenu_set_header(submenu, "Choose Firmware:");
         submenu_add_item(
             submenu,
@@ -141,13 +159,22 @@ void esp_flasher_scene_quick_on_enter(void* context) {
             state > QuickWROOM ? QuickWROOM_Airtag : QuickWROOMBoot_Airtag,
             esp_flasher_scene_quick_submenu_callback,
             app);
+        submenu_add_item(
+            submenu,
+            "Ghost ESP",
+            state > QuickWROOM ? QuickWROOM_GhostESP : QuickWROOMBoot_GhostESP,
+            esp_flasher_scene_quick_submenu_callback,
+            app);
         break;
+
     case QuickS3Boot_Marauder:
     case QuickS3Boot_Wardriver:
     case QuickS3Boot_Airtag:
+    case QuickS3Boot_GhostESP:
     case QuickS3_Marauder:
     case QuickS3_Wardriver:
     case QuickS3_Airtag:
+    case QuickS3_GhostESP:
         submenu_set_header(submenu, "Choose Firmware:");
         submenu_add_item(
             submenu,
@@ -167,7 +194,14 @@ void esp_flasher_scene_quick_on_enter(void* context) {
             state > QuickS3 ? QuickS3_Airtag : QuickS3Boot_Airtag,
             esp_flasher_scene_quick_submenu_callback,
             app);
+        submenu_add_item(
+            submenu,
+            "Ghost ESP",
+            state > QuickS3 ? QuickS3_GhostESP : QuickS3Boot_GhostESP,
+            esp_flasher_scene_quick_submenu_callback,
+            app);
         break;
+
     default:
         break;
     }
@@ -231,6 +265,15 @@ bool esp_flasher_scene_quick_on_event(void* context, SceneManagerEvent event) {
             firm = APP_DATA_PATH("assets/blackmagic/s2/blackmagic.bin");
             break;
 
+        case QuickS2Boot_GhostESP:
+            enter_bootloader = true;
+            /* fallthrough */
+        case QuickS2_GhostESP:
+            boot = APP_DATA_PATH("assets/ghostesp/s2/bootloader.bin");
+            part = APP_DATA_PATH("assets/ghostesp/s2/partitions.bin");
+            firm = APP_DATA_PATH("assets/ghostesp/s2/firmware.bin");
+            break;
+
         case QuickWROOMBoot_Marauder:
             enter_bootloader = true;
             /* fallthrough */
@@ -255,6 +298,15 @@ bool esp_flasher_scene_quick_on_event(void* context, SceneManagerEvent event) {
             boot = APP_DATA_PATH("assets/airtag/wroom/airtag_scanner.ino.bootloader.bin");
             part = APP_DATA_PATH("assets/airtag/airtag_scanner.ino.partitions.bin");
             firm = APP_DATA_PATH("assets/airtag/wroom/airtag_scanner.ino.bin");
+            break;
+
+        case QuickWROOMBoot_GhostESP:
+            enter_bootloader = true;
+            /* fallthrough */
+        case QuickWROOM_GhostESP:
+            boot = APP_DATA_PATH("assets/ghostesp/wroom/bootloader.bin");
+            part = APP_DATA_PATH("assets/ghostesp/wroom/partitions.bin");
+            firm = APP_DATA_PATH("assets/ghostesp/wroom/firmware.bin");
             break;
 
         case QuickS3Boot_Marauder:
@@ -284,6 +336,16 @@ bool esp_flasher_scene_quick_on_event(void* context, SceneManagerEvent event) {
             boot = APP_DATA_PATH("assets/airtag/s3/airtag_scanner.ino.bootloader.bin");
             part = APP_DATA_PATH("assets/airtag/airtag_scanner.ino.partitions.bin");
             firm = APP_DATA_PATH("assets/airtag/s3/airtag_scanner.ino.bin");
+            break;
+
+        case QuickS3Boot_GhostESP:
+            enter_bootloader = true;
+            /* fallthrough */
+        case QuickS3_GhostESP:
+            s3 = true;
+            boot = APP_DATA_PATH("assets/ghostesp/s3/bootloader.bin");
+            part = APP_DATA_PATH("assets/ghostesp/s3/partitions.bin");
+            firm = APP_DATA_PATH("assets/ghostesp/s3/firmware.bin");
             break;
 
         default:
